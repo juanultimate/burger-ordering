@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import classes from 'Ingredient.css'
+import classes from './Ingredient.css'
 import PropTypes from 'prop-types'
 
 class Ingredient extends Component {
@@ -46,16 +46,16 @@ class Ingredient extends Component {
                 break;
             }
 
-                return ingredient;
-
 
         }
+        return ingredient;
     }
 
 
-    Ingredient.propTypes ={
-     type: PropTypes.string.isRequired
+
     }
+Ingredient.propTypes ={
+    type: PropTypes.string.isRequired
         
 
 };
