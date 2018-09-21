@@ -1,14 +1,15 @@
 import React from 'react';
-import Wrapper from '../../hoc/Aux'
+import Aux from '../../hoc/Aux'
 import classes from './Layout.css'
+import ToolBar from "../Navigation/ToolBar/ToolBar";
 
 const layout = ( props ) => (
-    <Wrapper>
-        <div>menu 1, menu 2 menu 3</div>
+    <Aux>
+        <div><ToolBar/></div>
         <main className={classes.Content}>
             {props.children}
         </main>
-    </Wrapper>
+    </Aux>
 );
 
 export default layout;
