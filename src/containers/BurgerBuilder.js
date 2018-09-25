@@ -17,17 +17,29 @@ const INGREDIENT_PRICES = {
 };
 class BurgerBuilder extends Component{
     state= {
-        ingredients :{
-            salad: 0,
-            bacon:0,
-            cheese:0,
-            meat:0
-        },
+        ingredients :null,
         totalPrice: 5,
         purchasable: false,
         purchasing: false,
-        loading :false
+        loading :false,
+        error: false
     };
+
+    componentDidMount() {
+        axios.get('ingredients.json')
+            .then(response => {
+                if(response){
+                    this.setState({
+                        ingredients : response.data
+                    })
+                }
+            } )
+            .catch(error =>{
+                this.setState({
+                    error : true
+                })
+        })
+    }
 
     updatePurchaseStatus = (ingredients) => {
 
@@ -110,6 +122,9 @@ class BurgerBuilder extends Component{
     };
 
     render(){
+        if(! this.state.ingredients || this.state.ingredients.length === 0){
+            return (<p>Ingredients cannot be loaded</p>)
+        }
         let orderSummary =   <OrderSummary
             ingredients={this.state.ingredients}
             purchaseCancelled={this.purchaseCancelHandler}
