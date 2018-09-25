@@ -1,20 +1,46 @@
-import React from 'react';
+import React, {Component} from 'react';
 import Aux from "../Aux/Aux";
 import Modal from "../../components/UI/Modal/Modal";
 
 const withErrorHandler = (WrappedComponent, axios) => {
-    //this returns a functional component
-    return (props) => {
-        return (
-            <Aux>
-                <Modal show>
-                    Something did not work!
-                </Modal>
-                <WrappedComponent {...props} />
-            </Aux>
+    //this is an anonymous class
+    return class extends Component {
+        state = {
+            error : null
+        };
+        componentDidMount() {
+            axios.interceptors.request.use(request => {
+                this.setState(
+                    {error: false}
+                );
+                return request;
+            });
 
-        )
-    }
+            axios.interceptors.response.use(res => res, error => {
+                this.setState(
+                    {error: error}
+                )
+            });
+        }
+        errorConfirmedHandler = ()=>{
+            this.setState(
+                {error:null}
+            )
+        }
+
+        render() {
+            return (
+                <Aux>
+                    <Modal
+                        show={this.state.error}
+                        modalClosed={this.errorConfirmedHandler}>
+                        {this.state.error ? this.state.error.message : null}
+                    </Modal>
+                    <WrappedComponent {...this.props} />
+                </Aux>
+            )
+        }
+    };
 };
 
 export default withErrorHandler;
